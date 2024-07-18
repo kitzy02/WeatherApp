@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather app</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Font+Name">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="api.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-1hfwqwsDfQ32SPvKASwP9siT9uj6jQzBLVR9dZsVsF19wkhZqaHkYBwh4BY52wr5" crossorigin="anonymous">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2><ion-icon name="location-outline"></ion-icon><span id="location"></span></h2>
+            <h6 id="weather" class="weather"></h6>
+            <h4><span id="temp"></span><sup>o</sup>C</h4>
+            <img src="" id="icon">
+            <button class="refresh" onclick="window.location.reload()"><ion-icon name="refresh-outline"></ion-icon></button>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    const link = "https://api.openweathermap.org/data/2.5/weather?lat=17.4065&lon=78.4772&appid=790769fce2aa845eda3a66069bd96a01";
+
+    var request = new XMLHttpRequest();
+    request.open('GET', link, true);
+    request.onload = function () {
+        if (request.status >= 200 && request.status < 400) {
+            var obj = JSON.parse(this.response);
+            console.log(obj);
+            document.getElementById('weather').innerHTML = obj.weather[0].description;
+            document.getElementById('location').innerHTML = obj.name;
+            document.getElementById('temp').innerHTML = Math.round(obj.main.temp - 273.15);
+            document.getElementById('icon').src = "https://openweathermap.org/img/w/" + obj.weather[0].icon + ".png";
+        } else {
+            console.log("The city data is not available");
+        }
+    };
+    request.send();
+</script>
+</html>
